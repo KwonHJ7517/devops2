@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3" th:each="vo:${list}">
+	    <div class="thumbnail">
+	      <a th:href="@{/detail(ino=${vo.ino})}">
+	        <img th:src="@{'https://www.ocamall.com'+${vo.poster}}" style="width:230px;height: 130px">
+	        <div class="caption">
+	          <p th:text="${vo.name}"></p>
+	        </div>
+	      </a>
+	    </div>
+	  </div>
+    </div>
+    <div class="row text-center" style="margin-top: 20px">
+      <ul class="pagination">
+        <li th:if="${startPage>1}"><a th:href="@{/(page=${startPage-1})}">&laquo;</a></li>
+        <li th:class="${curpage==i}?'active':''" th:each="i:${#numbers.sequence(startPage,endPage)}"><a th:href="@{/(page=${i})}" th:text="${i}"></a>
+        <li th:if="${endPage<totalpage}"><a th:href="@{/(page=${endPage+1})}">&raquo;</a></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

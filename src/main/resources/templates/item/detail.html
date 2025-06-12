@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style type="text/css">
+.container{
+  margin-top: 50px;
+}
+.row{
+  margin: 0px auto;
+  width: 800px;
+}
+</style>
+</head>
+<body>
+ <div class="container">
+  <div class="row">
+   <table class="table">
+    <tr>
+     <td width="30%" class="text-center" rowspan="8">
+      <img th:src="@{'https://www.ocamall.com'+${vo.poster}}" style="width: 240px;height: 200px">
+     </td>
+      <td colspan="2">
+       <h3>[[${vo.name}]]&nbsp;</h3>
+      </td>
+    </tr>
+     <tr>
+      <th width="15" class="text-center">브랜드</th>
+      <td width="55%">[[${vo.brand}]]</td>
+     </tr>
+     <tr>
+      <th width="15" class="text-center">분류</th>
+      <td width="55%">[[${vo.type}]]</td>
+     </tr>
+     <tr>
+      <th width="15" class="text-center">가격</th>
+      <td width="55%">[[${vo.price}]]</td>
+     </tr>
+   </table>
+   <table class="table">
+    <tr>
+     <td class="text-right">
+      <input type=button class="btn-sm btn-danger" onclick="javascript:history.back()" 
+       value="목록"
+      >
+     </td>
+    </tr>
+   </table>
+  </div>
+ </div>
+</body>
+</html>
