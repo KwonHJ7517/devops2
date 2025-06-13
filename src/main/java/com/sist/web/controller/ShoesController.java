@@ -70,15 +70,14 @@ public class ShoesController {
         try {
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0"); // 필수: 일부 서버는 user-agent 없으면 차단
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0");
             conn.setRequestMethod("GET");
 
             InputStream in = conn.getInputStream();
             byte[] imageBytes = in.readAllBytes();
 
-            // Content-Type 설정 (대부분 PNG이지만 URL에 따라 다를 수 있음)
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG); // 필요시 MediaType.IMAGE_JPEG 등으로 변경
+            headers.setContentType(MediaType.IMAGE_PNG);
 
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
         } catch (Exception e) {
