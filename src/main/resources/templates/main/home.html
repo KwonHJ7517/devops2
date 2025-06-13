@@ -1,29 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>상품 리스트</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="row">
-      <div class="col-md-3" th:each="vo:${list}">
-	    <div class="thumbnail">
-	      <a th:href="@{/detail(ino=${vo.ino})}">
-	        <img th:src="@{'https://www.ocamall.com'+${vo.poster}}" style="width:230px;height: 130px">
-	        <div class="caption">
-	          <p th:text="${vo.name}"></p>
-	        </div>
-	      </a>
-	    </div>
-	  </div>
-    </div>
-    <div class="row text-center" style="margin-top: 20px">
+      <!-- 리스트 반복 -->
+      <div class="col-md-3" th:each="vo : ${list}">
+  		<div class="thumbnail">
+    	  <a th:href="@{/detail(goods_id=${vo.goodsId})}">
+           <img th:src="@{/proxy(url=${vo.img})}" style="width:230px;height:130px" />
+            <p th:text="${vo.nameKor}"></p>
+          </a>
+        </div>
+      </div>
+
+    <!-- 페이지네이션 -->
+    <div class="row text-center" style="margin-top: 20px;">
       <ul class="pagination">
-        <li th:if="${startPage>1}"><a th:href="@{/(page=${startPage-1})}">&laquo;</a></li>
-        <li th:class="${curpage==i}?'active':''" th:each="i:${#numbers.sequence(startPage,endPage)}"><a th:href="@{/(page=${i})}" th:text="${i}"></a>
-        <li th:if="${endPage<totalpage}"><a th:href="@{/(page=${endPage+1})}">&raquo;</a></li>
+        <li th:if="${startPage > 1}">
+          <a th:href="@{/(page=${startPage - 1})}">&laquo;</a>
+        </li>
+
+        <li th:each="i : ${#numbers.sequence(startPage, endPage)}" th:classappend="${curpage == i} ? 'active'">
+          <a th:href="@{/(page=${i})}" th:text="${i}"></a>
+        </li>
+
+        <li th:if="${endPage < totalpage}">
+          <a th:href="@{/(page=${endPage + 1})}">&raquo;</a>
+        </li>
       </ul>
     </div>
   </div>

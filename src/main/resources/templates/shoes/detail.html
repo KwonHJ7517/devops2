@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>상품 상세</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style>
+.container{
+  margin-top: 50px;
+}
+.row{
+  margin: 0 auto;
+  width: 800px;
+}
+</style>
+</head>
+<body>
+ <div class="container">
+  <div class="row">
+   <table class="table">
+    <tr>
+     <td width="30%" class="text-center" rowspan="8">
+      <img th:src="@{/proxy(url=${vo.img})}" style="width:230px;height:130px" />
+     </td>
+     <td colspan="2">
+       <h3>[[${vo.nameKor}]]&nbsp;</h3>
+       <h3>[[${vo.nameEng}]]</h3>
+     </td>
+    </tr>
+    <tr>
+      <th width="15" class="text-center">브랜드</th>
+      <td width="55%">[[${vo.brand}]]</td>
+    </tr>
+    <tr>
+      <th width="15" class="text-center">상품번호</th>
+      <td width="55%">[[${vo.sku}]]</td>
+    </tr>
+    <tr>
+      <th width="15" class="text-center">색상</th>
+      <td width="55%">[[${vo.color}]]</td>
+    </tr>
+    <tr>
+      <th width="15" class="text-center">타입</th>
+      <td width="55%">[[${vo.type}]]</td>
+    </tr>
+    <tr>
+      <th width="15" class="text-center">가격</th>
+      <td width="55%">[[${vo.variance}]]</td>
+    </tr>
+   </table>
+   <table class="table">
+    <tr>
+     <td class="text-right">
+      <input type="button" class="btn-sm btn-danger" onclick="history.back()" value="목록" />
+     </td>
+    </tr>
+   </table>
+  </div>
+ </div>
+</body>
+</html>
