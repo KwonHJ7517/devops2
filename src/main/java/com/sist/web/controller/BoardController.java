@@ -1,15 +1,38 @@
-    package com.sist.web.controller;
+package com.sist.web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.util.*;
+import com.sist.web.service.*;
+import com.sist.web.entity.*;
+import com.sist.web.vo.*;
 
 @Controller
 public class BoardController {
+    
+	@Autowired
+	private BoardService bService;
+	
 	
 	@GetMapping("/board/list")
-	public String board_list(Model model)
+	public String board_list(@RequestParam(name = "page",required = false) String page, Model model)
 	{
+		if(page==null)
+			page="1";
+		int curpage=Integer.parseInt(page);
+		
+		Map map=bService.boardListData(curpage);
+		
+		List<BoardVO> list=(List<BoardVO>)map.get("list");
+		int totalpage=(int)map.get("totalpage");
+		
+		
+		model.addAttribute("list", list);
+		model.addAttribute("totalpage", totalpage);
+		model.addAttribute("curpage", curpage);
 		model.addAttribute("main_html", "board/list");
 		return "index";
 	}

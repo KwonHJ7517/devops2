@@ -7,10 +7,43 @@
 <body>
   <div class="container">
     <div class="row">
-      <h3 class="text-center">게시판 목록</h3>
-      <a href="/board/detail" class="btn btn-sm btn-danger">상세보기</a>
-      <a href="/board/detail" class="btn btn-sm btn-primary">글쓰기</a>
+     <h3 class="text-center">게시판</h3>
+     <table class="table">
+       <tr>
+        <td>
+          <a href="/board/insert" class="btn btn-sm btn-danger">새글</a>
+        </td>
+       </tr>
+     </table>
+     <table class="table">
+       <thead>
+         <tr>
+           <th class="text-center" width="10%">번호</th>
+           <th class="text-center" width="45%">제목</th>
+           <th class="text-center" width="15%">이름</th>
+           <th class="text-center" width="10%">작성일</th>
+           <th class="text-center" width="20%">조회수</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr th:each="vo:${list}">
+           <td class="text-center" width="10%">[[${vo.no}]]</td>
+           <td width="45%">[[${vo.subject}]]</td>
+           <td class="text-center" width="15%">[[${vo.name}]]</td>
+           <td class="text-center" width="10%">[[${vo.dbday}]]</td>
+           <td class="text-center" width="20%">[[${vo.hit}]]</td>
+         </tr>
+         <tr>
+           <td colspan="5" class="text-center">
+            <a href="#" class="btn btn-sm btn-info">이전</a>
+             [[${curpage}]] page / [[${totalpage}]] pages
+            <a href="#" class="btn btn-sm btn-warning">다음</a>
+           </td>
+         </tr>
+       </tbody>
+     </table>
     </div>
   </div>
 </body>
+
 </html>
