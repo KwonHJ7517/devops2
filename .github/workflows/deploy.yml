@@ -40,24 +40,18 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
+
     - name: Add known_hosts
       run: |
-        ssh-keyscan -t ed25519 15.165.204.64 >> ~/.ssh/known_hosts
+        ssh-keyscan -t ed25519 # >> ~/.ssh/known_hosts
 
-    #- name: 기존프로세스 종료
-    #  run: |
-    #    kill -9 $(ps -ef | grep devops | grep -v grep | head -n 1 | awk '{print $2}') || true
-
-    - name: Deploy with rsync
-      run: |
-        timeout 60s rsync -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" \
-          -avz build/libs/*.jar ubuntu@15.165.204.64:~/app
-
+    - name: Deploy with Server
+      run: scp build/libs/*.jar ubuntu@#:~/app
 
 
     - name: Run SSH commands
       run: |
-        ssh -i ~/.ssh/id_ed25519 ubuntu@15.165.204.64 << 'EOF'
+        ssh -i ~/.ssh/id_ed25519 ubuntu@# << 'EOF'
           pkill -f 'java -jar' || true
           nohup java -jar ~/app/devops-0.0.1-SNAPSHOT.jar > log.txt 2>&1 &
         EOF
