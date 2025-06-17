@@ -54,7 +54,7 @@ public class ShoesEntity {
     @Column(name = "bookmark")
     private int bookmark;
 
-    @Column(name = "category_id") // ← 오타 주의
+    @Column(name = "category_id")
     private int categoryId;
 }
 

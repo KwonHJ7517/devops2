@@ -11,4 +11,8 @@ public interface ShoesService {
     public ShoesEntity shoesDetailData(int goodsId);
     
     public int shoesTotalpage();
+    
+    public List<ShoesListVO> shoesFindData(String fd, int start, int end);
+    
+    public int shoesFindTotalPage(String fd);
 }

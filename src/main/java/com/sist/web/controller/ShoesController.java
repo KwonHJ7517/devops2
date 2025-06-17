@@ -66,30 +66,81 @@ public class ShoesController {
         return "index";
     }
     
-    @RequestMapping("/find")
-    public String shoes_find(Model model)
-    {
-    	model.addAttribute("main_html", "shoes/find");
-    	return "index";
+    @GetMapping("/find_result")
+    public String shoes_find_result(
+            @RequestParam(name = "fd", required = false, defaultValue = "") String fd,
+            @RequestParam(name = "page", required = false, defaultValue = "1") String page,
+            Model model) {
+
+        int curpage = Integer.parseInt(page);
+        int rowSize = 12;
+        int start = (rowSize * curpage) - (rowSize - 1);
+        int end = rowSize * curpage;
+
+        List<ShoesListVO> list;
+        int totalpage;
+
+        if (fd.isEmpty()) {
+            list = sService.shoesListData(start, end);
+            totalpage = sService.shoesTotalpage();
+        } else {
+            list = sService.shoesFindData(fd, start, end);
+            totalpage = sService.shoesFindTotalPage(fd);
+        }
+
+        final int BLOCK = 10;
+        int startPage = ((curpage - 1) / BLOCK * BLOCK) + 1;
+        int endPage = ((curpage - 1) / BLOCK * BLOCK) + BLOCK;
+        if (endPage > totalpage)
+            endPage = totalpage;
+
+        model.addAttribute("list", list);
+        model.addAttribute("curpage", curpage);
+        model.addAttribute("totalpage", totalpage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("fd", fd);
+
+        model.addAttribute("main_html", "shoes/find_result");
+        return "index";
     }
     
     @GetMapping("/proxy")
-    public ResponseEntity<byte[]> proxy(@RequestParam("url") String urlStr) {
+    public ResponseEntity<byte[]> proxy(@RequestParam(name = "url", required = false) String urlStr) {
+        if (urlStr == null || urlStr.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
         try {
             URL url = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
             conn.setRequestMethod("GET");
+            conn.connect();
 
-            InputStream in = conn.getInputStream();
-            byte[] imageBytes = in.readAllBytes();
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                return ResponseEntity.status(responseCode).build();
+            }
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
+            String contentType = conn.getContentType();
 
-            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+            try (InputStream in = conn.getInputStream()) {
+                byte[] imageBytes = in.readAllBytes();
+
+                HttpHeaders headers = new HttpHeaders();
+                if (contentType != null) {
+                    headers.setContentType(MediaType.parseMediaType(contentType));
+                } else {
+                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                }
+
+                return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }

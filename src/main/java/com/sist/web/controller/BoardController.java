@@ -50,9 +50,11 @@ public class BoardController {
 		return "redirect:/board/list";
 	} 
 	@GetMapping("/board/detail")
-	public String board_detail(Model model)
+	public String board_detail(@RequestParam("no") int no, Model model)
 	{
-		model.addAttribute("main_html", "board/detail");
-		return "index";
+	    BoardEntity vo = bService.boardDetailData(no);
+	    model.addAttribute("vo", vo);
+	    model.addAttribute("main_html", "board/detail");
+	    return "index";
 	}
 }

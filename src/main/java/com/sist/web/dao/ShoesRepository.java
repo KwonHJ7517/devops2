@@ -21,5 +21,15 @@ public interface ShoesRepository extends JpaRepository<ShoesEntity, Integer> {
     public List<ShoesListVO> shoesListData(@Param("start") int start, @Param("end") int end);
 
     public ShoesEntity findByGoodsId(int goodsId);
+    
+    @Query(value = "SELECT goods_id,name_kor,name_eng,img,brand,sku,color,type,variance,release_date,release_price,num "
+            + "FROM (SELECT goods_id,name_kor,name_eng,img,brand,sku,color,type,variance,release_date,release_price,rownum as num "
+            + "FROM (SELECT goods_id,name_kor,name_eng,img,brand,sku,color,type,variance,release_date,release_price "
+            + "FROM shoes WHERE name_kor LIKE '%'||:fd||'%' OR brand LIKE '%'||:fd||'%' ORDER BY goods_id ASC)) "
+            + "WHERE num BETWEEN :start AND :end", nativeQuery = true)
+    public List<ShoesListVO> shoesFindData(@Param("fd") String fd, @Param("start") int start, @Param("end") int end);
+
+    @Query(value = "SELECT COUNT(*) FROM shoes WHERE name_kor LIKE '%'||:fd||'%' OR brand LIKE '%'||:fd||'%'", nativeQuery = true)
+    public int shoesFindCount(@Param("fd") String fd);
 
 }

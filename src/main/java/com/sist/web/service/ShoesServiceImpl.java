@@ -31,4 +31,15 @@ public class ShoesServiceImpl implements ShoesService{
 		return (int)Math.ceil(count / 12.0);
 	}
 
+	@Override
+	public List<ShoesListVO> shoesFindData(String fd, int start, int end) {
+	    return sDao.shoesFindData(fd, start, end);
+	}
+
+	@Override
+	public int shoesFindTotalPage(String fd) {
+	    int count = sDao.shoesFindCount(fd);
+	    return (int)Math.ceil(count / 12.0);
+	}
+
 }
